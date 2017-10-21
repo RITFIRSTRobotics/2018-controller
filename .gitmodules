@@ -1,0 +1,3 @@
+[submodule "2018-core-code"]
+	path = 2018-core-code
+	url = https://github.com/RITFIRSTRobotics/2018-core-code
