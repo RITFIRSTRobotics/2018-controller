@@ -5,9 +5,12 @@
  *
  * @author Connor Henley, @thatging3rkid
  */
+#include "src/i2c_transmission.hpp"
 
-void start() {
+void setup() {
+	init_i2c();
 }
 
 void loop() {
+	delay(20);
 }
