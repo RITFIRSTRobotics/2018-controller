@@ -5,7 +5,7 @@
  *
  * @author Connor Henley, @thatging3rkid
  */
-#include "src/i2c_transmission.hpp"
+#include "i2c_transmission.hpp"
 
 void setup() {
 	init_i2c();
