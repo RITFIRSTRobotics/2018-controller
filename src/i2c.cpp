@@ -8,8 +8,8 @@
 
 #define ADDRESS 0 // this should be set with hardware jumpers?
 
-#include "i2c_transmission.hpp"
-#include "Constants.hpp"
+#include "i2c.hpp"
+#include "i2c_Constants.hpp"
 
 #include <Wire.h>
 

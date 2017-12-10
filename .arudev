@@ -6,4 +6,4 @@
 
 # Dependencies
 src/
-core/i2c/Constants.hpp
+core/i2c/i2c_Constants.hpp
