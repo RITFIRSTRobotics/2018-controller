@@ -1,5 +1,5 @@
 /**
- * src/i2c_transmission.cpp
+ * src/i2c.hpp
  *
  * Handles data reading and i2c transmission
  *
@@ -12,10 +12,5 @@
  * Initialize i2c and data collection pins
  */
 void init_i2c();
-
-/**
- * Read data from the pins and write it out to i2c
- */
-void write_i2c();
 
 #endif

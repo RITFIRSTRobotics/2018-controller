@@ -1,5 +1,5 @@
 /**
- * src/i2c_transmission.cpp
+ * src/i2c.cpp
  *
  * Handles data reading and i2c transmission
  *
@@ -8,10 +8,12 @@
 
 #define ADDRESS 0 // this should be set with hardware jumpers?
 
+#include "Pins.h"
 #include "i2c.hpp"
-#include "i2c_Constants.hpp"
+#include "i2c_constants.hpp"
 
 #include <Wire.h>
+#include <stdio.h>
 
 static void __respond(); 
 
@@ -45,5 +47,9 @@ void init_i2c() {
  * A private method to responsd to an i2c data read
  */
 static void __respond() {
-	Wire.write("fill this in");
+	char buffer[I2CDATA_BUFFER_LEN];
+	sprintf(buffer, I2CDATA_FORMAT_STRING, analogRead(JOY0_X) / 4, analogRead(JOY0_Y) / 4, analogRead(JOY1_X) / 4,
+		analogRead(JOY1_Y) / 4, digitalRead(BUTTON0), digitalRead(BUTTON1), digitalRead(BUTTON2), 
+		digitalRead(BUTTON3));
+	Wire.write(buffer);
 }
