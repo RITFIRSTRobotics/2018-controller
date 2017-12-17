@@ -8,12 +8,13 @@
 
 #define ADDRESS 0 // this should be set with hardware jumpers?
 
-#include "Pins.h"
+#include "pins.h"
 #include "i2c.hpp"
 #include "i2c_constants.hpp"
 
 #include <Wire.h>
 #include <stdio.h>
+#include <stdint.h>
 
 static void __respond(); 
 
@@ -41,15 +42,33 @@ void init_i2c() {
 
 	// Setup the response to a data request
 	Wire.onRequest(__respond);
+
+  // Initalize pins
+  pinMode(BUTTON0, BUTTONS_MODE);
+  pinMode(BUTTON1, BUTTONS_MODE);
+  pinMode(BUTTON2, BUTTONS_MODE);
+  pinMode(BUTTON3, BUTTONS_MODE);
+
+  pinMode(JOY0_X, JOYS_MODE);
+  pinMode(JOY0_Y, JOYS_MODE);
+  pinMode(JOY1_X, JOYS_MODE);
+  pinMode(JOY1_Y, JOYS_MODE);
 }
 
 /**
  * A private method to responsd to an i2c data read
  */
 static void __respond() {
-	char buffer[I2CDATA_BUFFER_LEN];
-	sprintf(buffer, I2CDATA_FORMAT_STRING, analogRead(JOY0_X) / 4, analogRead(JOY0_Y) / 4, analogRead(JOY1_X) / 4,
-		analogRead(JOY1_Y) / 4, digitalRead(BUTTON0), digitalRead(BUTTON1), digitalRead(BUTTON2), 
-		digitalRead(BUTTON3));
+	char buffer[I2CDATA_BUFFER_LEN]; // make the buffer
+  uint8_t buttons_rep = 0; // make a temp variable to store the buttons pressed
+
+  // Read button, see if it needs to be negated then, eliminate every bit but the last, then shift into position
+  buttons_rep += ((digitalRead(BUTTON0) != BUTTON0_NEGATED) & 0x01) << 0;
+  buttons_rep += ((digitalRead(BUTTON1) != BUTTON1_NEGATED) & 0x01) << 1;
+  buttons_rep += ((digitalRead(BUTTON2) != BUTTON2_NEGATED) & 0x01) << 2;
+  buttons_rep += ((digitalRead(BUTTON3) != BUTTON3_NEGATED) & 0x01) << 3;
+  
+	sprintf(buffer, I2CDATA_FORMAT_STRING, analogRead(JOY0_X) / 4, analogRead(JOY0_Y) / 4, analogRead(JOY1_X) / 4, analogRead(JOY1_Y) / 4, buttons_rep);
 	Wire.write(buffer);
 }
+

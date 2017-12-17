@@ -6,4 +6,5 @@
 
 # Dependencies
 src/
-core/i2c/i2c_Constants.hpp
+core/i2c/i2c_constants.hpp
+core/serial/usbser_constants.hpp

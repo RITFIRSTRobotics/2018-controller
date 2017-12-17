@@ -1,5 +1,5 @@
 /**
- * src/Pins.h
+ * src/pins.h
  *
  * Pinout for the controller 
  *
