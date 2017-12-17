@@ -59,7 +59,7 @@ void init_i2c() {
  * A private method to responsd to an i2c data read
  */
 static void __respond() {
-	char buffer[I2CDATA_BUFFER_LEN]; // make the buffer
+  char buffer[I2CDATA_BUFFER_LEN]; // make the buffer
   uint8_t buttons_rep = 0; // make a temp variable to store the buttons pressed
 
   // Read button, see if it needs to be negated then, eliminate every bit but the last, then shift into position
@@ -68,7 +68,7 @@ static void __respond() {
   buttons_rep += ((digitalRead(BUTTON2) != BUTTON2_NEGATED) & 0x01) << 2;
   buttons_rep += ((digitalRead(BUTTON3) != BUTTON3_NEGATED) & 0x01) << 3;
   
-	sprintf(buffer, I2CDATA_FORMAT_STRING, analogRead(JOY0_X) / 4, analogRead(JOY0_Y) / 4, analogRead(JOY1_X) / 4, analogRead(JOY1_Y) / 4, buttons_rep);
-	Wire.write(buffer);
+  sprintf(buffer, I2CDATA_FORMAT_STRING, analogRead(JOY0_X) / 4, analogRead(JOY0_Y) / 4, analogRead(JOY1_X) / 4, analogRead(JOY1_Y) / 4, buttons_rep);
+  Wire.write(buffer);
 }
 
