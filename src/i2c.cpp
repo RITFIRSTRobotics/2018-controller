@@ -26,22 +26,22 @@ void init_i2c() {
 #ifdef ADDRESS
 	Wire.begin(BASE_ADDR + ADDRESS);
 #else
-	// Maybe on a rev2 PCB, there should be hardware jumpers mapped to the microprocessor,
-	// so that addresses can be swapped without recompiling
-	pinMode(ADDR0_PIN, INPUT);
-	pinMode(ADDR1_PIN, INPUT);
+  // Maybe on a rev2 PCB, there should be hardware jumpers mapped to the microprocessor,
+  // so that addresses can be swapped without recompiling
+  pinMode(ADDR0_PIN, INPUT);
+  pinMode(ADDR1_PIN, INPUT);
 
-	if (digitalRead(ADDR0_PIN) && digitalRead(ADDR1_PIN)) {
-		Wire.begin(ADDR2);
-	} else if (digitalRead(ADDR1_PIN)) {
-		Wire.begin(ADDR1);
-	} else if (digitalRead(ADDR0_PIN)) {
-		Wire.begin(ADDR0);
-	}
+  if (digitalRead(ADDR0_PIN) && digitalRead(ADDR1_PIN)) {
+    Wire.begin(ADDR2);
+  } else if (digitalRead(ADDR1_PIN)) {
+    Wire.begin(ADDR1);
+  } else if (digitalRead(ADDR0_PIN)) {
+    Wire.begin(ADDR0);
+  }
 #endif
 
-	// Setup the response to a data request
-	Wire.onRequest(__respond);
+  // Setup the response to a data request
+  Wire.onRequest(__respond);
 
   // Initalize pins
   pinMode(BUTTON0, BUTTONS_MODE);
