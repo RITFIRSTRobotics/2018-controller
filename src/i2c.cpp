@@ -5,8 +5,7 @@
  *
  * @author Connor Henley, @thatging3rkid
  */
-
-#define ADDRESS 0 // this should be set with hardware jumpers?
+#undef ADDRESS // using hardware addressing 
 
 #include "pins.h"
 #include "i2c.hpp"
