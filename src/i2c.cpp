@@ -37,13 +37,13 @@ void init_i2c() {
   pinMode(ADDR0_PIN, INPUT);
   pinMode(ADDR1_PIN, INPUT);
 
-  if (digitalRead(ADDR0_PIN) && digitalRead(ADDR1_PIN)) {
+  if (digitalRead(ADDR0_PIN) == HIGH && digitalRead(ADDR1_PIN) == HIGH) {
     Wire.begin(ADDR2);
     _addr_offset = 2;
-  } else if (digitalRead(ADDR1_PIN)) {
+  } else if (digitalRead(ADDR0_PIN) == HIGH) {
     Wire.begin(ADDR1);
     _addr_offset = 1;
-  } else if (digitalRead(ADDR0_PIN)) {
+  } else {
     Wire.begin(ADDR0);
     _addr_offset = 0;
   }
