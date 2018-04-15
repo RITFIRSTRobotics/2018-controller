@@ -60,6 +60,7 @@ void init_i2c() {
  */
 static void __respond() {
   char buffer[I2CDATA_BUFFER_LEN]; // make the buffer
+  memset(buffer, 0, I2CDATA_BUFFER_LEN); // clear out the buffer
   uint8_t buttons_rep = 0; // make a temp variable to store the buttons pressed
 
   // Read button, see if it needs to be negated then, eliminate every bit but the last, then shift into position
