@@ -30,29 +30,43 @@ static uint8_t _addr_offset = 0;
 void init_i2c() {
 	// Initialize i2c with an address
 #ifdef ADDRESS
-	Wire.begin(BASE_ADDR + ADDRESS);
+  Wire.begin(BASE_ADDR + ADDRESS);
 #else
   // Maybe on a rev2 PCB, there should be hardware jumpers mapped to the microprocessor,
   // so that addresses can be swapped without recompiling
   pinMode(ADDR0_PIN, INPUT);
   pinMode(ADDR1_PIN, INPUT);
 
-  if (digitalRead(ADDR0_PIN) == HIGH && digitalRead(ADDR1_PIN) == HIGH) {
-    Wire.begin(ADDR2);
-    _addr_offset = 2;
-  } else if (digitalRead(ADDR0_PIN) == HIGH) {
-    Wire.begin(ADDR1);
-    _addr_offset = 1;
-  } else {
-    Wire.begin(ADDR0);
-    _addr_offset = 0;
+  // Read both address pins many times to see if any are floating
+  int8_t count_pin1 = 0;
+  int8_t count_pin2 = 0;
+  for (int i = 0; i < 127; i += 1) {
+    count_pin1 += (digitalRead(ADDR0_PIN) == HIGH)? 1 : -1;
+    count_pin2 += (digitalRead(ADDR1_PIN) == HIGH)? 1 : -1;
+    
+    delay(30);
   }
+
+  // Pick the pin state: anything that's not almost perfectly high is low (aka floating is low)
+  boolean pin1_state = count_pin1 >= 126;
+  boolean pin2_state = count_pin2 >= 126;
+  
+  // Decide which address this is
+  if (pin1_state && pin2_state) {
+    _addr_offset = ADDR2 - BASE_ADDR;
+  } else if (pin1_state && !pin2_state) {
+    _addr_offset = ADDR1 - BASE_ADDR;
+  } else if (!pin1_state && !pin2_state) {
+    _addr_offset = ADDR0 - BASE_ADDR;
+  }
+
+  Wire.begin(BASE_ADDR + _addr_offset);
 #endif
 
   // Setup the response to a data request
   Wire.onRequest(__respond);
 
-  // Initalize pins
+  // Initalize controller pins
   pinMode(BUTTON0, BUTTONS_MODE);
   pinMode(BUTTON1, BUTTONS_MODE);
   pinMode(BUTTON2, BUTTONS_MODE);
